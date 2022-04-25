@@ -3,6 +3,7 @@ import fastifyJwt from 'fastify-jwt';
 import userRoutes from './modules/user/user.routes';
 import { productSchemas } from './modules/product/product.schema';
 import { userSchemas } from './modules/user/user.schema';
+import productRoutes from './modules/product/product.routes';
 
 export const server = Fastify();
 
@@ -10,6 +11,16 @@ export const server = Fastify();
 declare module 'fastify' {
   export interface FastifyInstance {
     authenticate: any;
+  }
+}
+
+declare module 'fastify-jwt' {
+  interface FastifyJWT {
+    user: {
+      id: number;
+      email: string;
+      name: string;
+    };
   }
 }
 
@@ -43,6 +54,7 @@ async function main() {
   }
 
   server.register(userRoutes, { prefix: 'api/users' });
+  server.register(productRoutes, { prefix: 'api/products' });
 
   try {
     await server.listen(3001, '0.0.0.0');
