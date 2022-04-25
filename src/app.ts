@@ -1,6 +1,7 @@
-import Fastify, { FastifyRequest, FastifyReply } from 'fastify';
+import Fastify, { FastifyReply, FastifyRequest } from 'fastify';
 import fastifyJwt from 'fastify-jwt';
 import userRoutes from './modules/user/user.routes';
+import { productSchemas } from './modules/product/product.schema';
 import { userSchemas } from './modules/user/user.schema';
 
 export const server = Fastify();
@@ -36,7 +37,8 @@ server.get('/healthcheck', async () => {
 
 async function main() {
   // register schemas before register routes
-  for (const schema of userSchemas) {
+
+  for (const schema of [...userSchemas, ...productSchemas]) {
     server.addSchema(schema);
   }
 
