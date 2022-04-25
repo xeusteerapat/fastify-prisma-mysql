@@ -5,6 +5,13 @@ import { userSchemas } from './modules/user/user.schema';
 
 export const server = Fastify();
 
+// type declaration for authenticate
+declare module 'fastify' {
+  export interface FastifyInstance {
+    authenticate: any;
+  }
+}
+
 // register plugins
 server.register(fastifyJwt, {
   secret: process.env.FASTIFY_JWT_SECRET as string,
