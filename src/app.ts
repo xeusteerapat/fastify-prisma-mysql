@@ -4,6 +4,9 @@ import userRoutes from './modules/user/user.routes';
 import { productSchemas } from './modules/product/product.schema';
 import { userSchemas } from './modules/user/user.schema';
 import productRoutes from './modules/product/product.routes';
+import swagger from 'fastify-swagger';
+import { withRefResolver } from 'fastify-zod';
+import { version } from '../package.json';
 
 export const server = Fastify();
 
@@ -52,6 +55,22 @@ async function main() {
   for (const schema of [...userSchemas, ...productSchemas]) {
     server.addSchema(schema);
   }
+
+  server.register(
+    swagger,
+    withRefResolver({
+      routePrefix: '/docs',
+      exposeRoute: true,
+      staticCSP: true,
+      openapi: {
+        info: {
+          title: 'Fastify API',
+          description: 'Example API created from Fastify and Prisma',
+          version,
+        },
+      },
+    })
+  );
 
   server.register(userRoutes, { prefix: 'api/users' });
   server.register(productRoutes, { prefix: 'api/products' });
