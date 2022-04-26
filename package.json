@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsnd --respawn --transpile-only --exit-child src/app.ts",
     "start": "tsc && node dist/src/app.js",
-    "test": "tap --node-arg=--require=ts-node/register"
+    "test": "tap --node-arg=--require=ts-node/register",
+    "migrate:dev": "npx prisma migrate dev"
   },
   "keywords": [],
   "author": "",
