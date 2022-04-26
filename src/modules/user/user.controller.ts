@@ -1,7 +1,8 @@
-import { verifyPassword, hashPassword } from './../../libs/hash';
+import { verifyPassword } from './../../libs/hash';
 import { CreateUserInputSchema, LoginInputSchema } from './user.schema';
 import { createUser, findUserByEmail, findUsers } from './user.service';
 import { FastifyRequest, FastifyReply } from 'fastify';
+import { Prisma } from '@prisma/client';
 
 export async function registerUserHandler(
   request: FastifyRequest<{
@@ -17,7 +18,15 @@ export async function registerUserHandler(
     return reply.code(201).send(user);
   } catch (error) {
     console.log(error);
-    return reply.code(500).send(error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        return reply.code(500).send({
+          statusCode: 500,
+          error: 'Internal Server Error',
+          message: 'Email already in use',
+        });
+      }
+    }
   }
 }
 
