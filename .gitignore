@@ -132,3 +132,6 @@ dist
 # ts build folder
 ./build
 ./dist
+
+# prisma test db
+.env.test
