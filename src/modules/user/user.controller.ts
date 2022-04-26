@@ -1,4 +1,3 @@
-import { server } from './../../app';
 import { verifyPassword, hashPassword } from './../../libs/hash';
 import { CreateUserInputSchema, LoginInputSchema } from './user.schema';
 import { createUser, findUserByEmail, findUsers } from './user.service';
@@ -50,7 +49,7 @@ export async function loginHandler(
     const { password, salt, ...rest } = user;
 
     return {
-      accessToken: server.jwt.sign(rest),
+      accessToken: request.jwt.sign(rest),
     };
   }
 
