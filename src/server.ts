@@ -29,7 +29,12 @@ declare module 'fastify-jwt' {
 }
 
 function buildServer() {
-  const server = Fastify();
+  const server = Fastify({
+    logger: {
+      level: 'info',
+      prettyPrint: true,
+    },
+  });
 
   // register plugins
   server.register(fastifyJwt, {
