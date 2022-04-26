@@ -56,6 +56,7 @@ function buildServer() {
   // add hook
   server.addHook('preHandler', (req, res, next) => {
     req.jwt = server.jwt;
+    return next();
   });
 
   // register schemas before register routes
