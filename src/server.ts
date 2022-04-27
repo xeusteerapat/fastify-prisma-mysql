@@ -7,6 +7,13 @@ import productRoutes from './modules/product/product.routes';
 import swagger from 'fastify-swagger';
 import { withRefResolver } from 'fastify-zod';
 import { version } from '../package.json';
+import pino from 'pino';
+
+const logger = pino({
+  level: 'info',
+  prettyPrint: true,
+  timestamp: () => `,"time":"${new Date(Date.now()).toISOString()}"`,
+});
 
 // type declaration for authenticate
 declare module 'fastify' {
@@ -30,10 +37,7 @@ declare module 'fastify-jwt' {
 
 function buildServer() {
   const server = Fastify({
-    logger: {
-      level: 'info',
-      prettyPrint: true,
-    },
+    logger,
   });
 
   // register plugins
